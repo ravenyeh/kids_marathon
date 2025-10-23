@@ -1,398 +1,2637 @@
 <!DOCTYPE html>
-<html lang="zh-TW" class="scroll-smooth">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>孩童與耐力運動：全面分析</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals with Soft Blue/Green Accents -->
-    <!-- Application Structure Plan: The SPA is designed as a single-page, thematic scrolling experience. This structure was chosen over a complex dashboard to provide a clear, linear-yet-explorable narrative for parents and coaches. The user starts with a direct, nuanced answer (The Core Question), then can dive into specific areas of interest (Physiology, Risks/Benefits, Guidelines) via a sticky navigation bar. The flow is designed to build understanding progressively: from the "what" to the "why" and finally the "how." Key interactions include a dynamic chart to compare risks under different training scenarios and clickable tabs for age-specific guidelines, making complex data digestible and actionable. This user-centric design prioritizes clarity and practical application over simply mirroring a dense report structure. -->
-    <!-- Visualization & Content Choices: 
-        1. Core Question -> Inform -> Key Takeaway Cards (HTML/Tailwind) -> Interaction: Hover effects. Justification: Provides a quick, scannable summary of the main points right at the start.
-        2. Physiological Differences -> Organize/Compare -> Two-Column Comparison Table (HTML/Tailwind) -> Interaction: None. Justification: A static side-by-side comparison with icons is the clearest way to present the fundamental scientific differences between children and adults without overwhelming the user.
-        3. Risks vs. Benefits -> Compare/Analyze -> Interactive Bar Chart (Chart.js/Canvas) -> Interaction: Buttons to switch datasets ('Untrained', 'Well-Trained'). Justification: This dynamically illustrates the crucial concept that proper training mitigates risks and enhances benefits, making it the most impactful visualization.
-        4. Expert Guidelines -> Inform/Organize -> Clickable Tabs (HTML/JS) -> Interaction: Clicking age-group tabs reveals specific recommendations. Justification: This breaks down dense guidelines into manageable, relevant chunks, providing highly practical, personalized advice.
-        5. A Smarter Approach -> Inform -> Checklist (HTML/Tailwind) -> Interaction: Hover effects. Justification: A simple, actionable checklist format effectively summarizes the key takeaways into best practices.
-    -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>台股分析報告 - 2025-10-23 09:23:39</title>
     <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: #FDFBF8;
-            color: #3f3c3a;
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
         }
-        .nav-link {
-            transition: color 0.3s, border-bottom-color 0.3s;
-            border-bottom: 2px solid transparent;
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
         }
-        .nav-link.active, .nav-link:hover {
-            color: #2563eb;
-            border-bottom-color: #2563eb;
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
         }
-        .tab.active {
-            background-color: #2563eb;
-            color: #ffffff;
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
-        .chart-container {
-            position: relative;
+
+        .report-time {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .section {
+            padding: 30px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            display: inline-block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            color: #667eea;
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .stat-value.positive {
+            color: #10b981;
+        }
+
+        .stat-value.negative {
+            color: #ef4444;
+        }
+
+        table {
             width: 100%;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 350px;
-            max-height: 450px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
         }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 400px;
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr:hover {
+            background: #f5f7fa;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .change-positive {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .change-negative {
+            color: #ef4444;
+            font-weight: bold;
+        }
+
+        .change-neutral {
+            color: #6b7280;
+        }
+
+        .rankings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .ranking-card {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+        }
+
+        .ranking-card h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .news-section {
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f4ff;
+            border-radius: 5px;
+        }
+
+        .news-section h4 {
+            color: #667eea;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .news-item {
+            margin: 5px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        .news-item a {
+            color: #4b5563;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: block;
+            padding: 3px 0;
+        }
+
+        .news-item a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+
+        .news-publisher {
+            color: #9ca3af;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+
+        .signal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .signal-card {
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid;
+        }
+
+        .signal-card.bullish {
+            background: #d1fae5;
+            border-color: #10b981;
+        }
+
+        .signal-card.bearish {
+            background: #fee2e2;
+            border-color: #ef4444;
+        }
+
+        .signal-card.golden {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+
+        .signal-card.death {
+            background: #e0e7ff;
+            border-color: #6366f1;
+        }
+
+        .signal-card h3 {
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .signal-card.bullish h3 {
+            color: #10b981;
+        }
+
+        .signal-card.bearish h3 {
+            color: #ef4444;
+        }
+
+        .signal-card.golden h3 {
+            color: #f59e0b;
+        }
+
+        .signal-card.death h3 {
+            color: #6366f1;
+        }
+
+        .signal-list {
+            list-style: none;
+        }
+
+        .signal-list li {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+
+        footer {
+            background: #f3f4f6;
+            padding: 20px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9em;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+
+        .badge.up {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.down {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 768px) {
+            .rankings-grid, .signal-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .section {
+                padding: 20px;
             }
         }
+        
     </style>
 </head>
-<body class="bg-[#FDFBF8]">
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 台股分析報告</h1>
+            <p class="report-time">生成時間: 2025-10-23 09:23:39</p>
+        </header>
 
-    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <h1 class="text-xl md:text-2xl font-bold text-gray-800">孩童與耐力運動</h1>
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#summary" class="nav-link text-gray-600 font-medium pb-1">總體看法</a>
-                    <a href="#physiology" class="nav-link text-gray-600 font-medium pb-1">生理差異</a>
-                    <a href="#risks-benefits" class="nav-link text-gray-600 font-medium pb-1">風險與益處</a>
-                    <a href="#guidelines" class="nav-link text-gray-600 font-medium pb-1">專家指引</a>
-                    <a href="#conclusion" class="nav-link text-gray-600 font-medium pb-1">結論</a>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-
-        <section id="summary" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-4 text-blue-700">孩童適合跑馬拉松嗎？</h2>
-            <p class="text-lg text-center max-w-3xl mx-auto text-gray-700 mb-8">
-                關於孩童是否適合參與馬拉松等長距離耐力運動，醫學界和體育界的共識是：<strong class="text-gray-900">不建議青春期前的兒童參加全程或半程馬拉松</strong>。這並非完全禁止，而是強調應採取一種更謹慎、以發展為重、樂趣為先的訓練方法。本頁將帶您深入了解背後的科學原理、潛在風險與益處，以及專家們的具體建議。
+        
+        <section class="section">
+            <h2 class="section-title">📈 市場概況</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:15px;">
+                📅 資料區間：近 1 個月交易數據 | 統計基準：當日收盤價
             </p>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-                    <h3 class="font-bold text-xl mb-2 text-blue-600">生理未成熟</h3>
-                    <p class="text-gray-600">兒童的骨骼、心肺和體溫調節系統仍在發育，無法像成人一樣高效應對長時間的生理壓力。</p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>分析股票數</h3>
+                    <div class="stat-value">22</div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-                    <h3 class="font-bold text-xl mb-2 text-blue-600">風險需謹慎</h3>
-                    <p class="text-gray-600">過早進行高強度專項訓練，可能增加骨骼生長板損傷、過度使用傷害和心理倦怠的風險。</p>
+                <div class="stat-card">
+                    <h3>上漲股票數</h3>
+                    <div class="stat-value positive">12 <span style="font-size:0.5em">(54.5%)</span></div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200 hover:shadow-lg transition-shadow">
-                    <h3 class="font-bold text-xl mb-2 text-blue-600">樂趣大於競技</h3>
-                    <p class="text-gray-600">專家的普遍建議是，孩童運動應多元化，以培養興趣和基本運動技能為主，而非追求競技成績。</p>
+                <div class="stat-card">
+                    <h3>下跌股票數</h3>
+                    <div class="stat-value negative">9 <span style="font-size:0.5em">(40.9%)</span></div>
                 </div>
-            </div>
-        </section>
-
-        <section id="physiology" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">為何不同？兒童與成人的生理差異</h2>
-            <p class="text-lg text-center max-w-3xl mx-auto text-gray-700 mb-10">
-                了解兒童身體的獨特之處，是制定安全有效訓練計畫的基礎。他們的身體並非縮小版的成人，在多個關鍵生理系統上都有顯著差異，這直接影響了他們對耐力運動的反應。
-            </p>
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <h3 class="text-2xl font-bold text-center mb-4 text-blue-700">兒童</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <span class="text-2xl mr-4">🌡️</span>
-                            <div><strong class="block text-gray-800">體溫調節較差</strong>身體表面積與體重比更大，流汗效率較低，更容易過熱或失溫。</div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-2xl mr-4">🦴</span>
-                            <div><strong class="block text-gray-800">骨骼仍在發育</strong>骨骼末端的生長板較脆弱，易因重複性衝擊而受損，影響正常發育。</div>
-                        </li>
-                        <li class="flex items-start">
-                             <span class="text-2xl mr-4">❤️</span>
-                            <div><strong class="block text-gray-800">心血管系統不同</strong>心臟較小，每次心跳輸出量較少，需以更高心率來彌補，無氧閾值較低。</div>
-                        </li>
-                        <li class="flex items-start">
-                             <span class="text-2xl mr-4">⚡</span>
-                            <div><strong class="block text-gray-800">能量代謝差異</strong>更依賴有氧代謝和脂肪作為能量來源，糖原儲備較少，恢復速度可能較慢。</div>
-                        </li>
-                    </ul>
+                <div class="stat-card">
+                    <h3>平均漲跌幅</h3>
+                    <div class="stat-value positive">2.99%</div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <h3 class="text-2xl font-bold text-center mb-4 text-gray-600">成人</h3>
-                     <ul class="space-y-4">
-                        <li class="flex items-start">
-                            <span class="text-2xl mr-4">🌡️</span>
-                            <div><strong class="block text-gray-800">體溫調節成熟</strong>流汗機制更有效率，能更好地在運動中維持核心體溫穩定。</div>
-                        </li>
-                        <li class="flex items-start">
-                            <span class="text-2xl mr-4">🦴</span>
-                            <div><strong class="block text-gray-800">骨骼發育完全</strong>骨骼已骨化，生長板閉合，能承受較高的重複性衝擊力。</div>
-                        </li>
-                        <li class="flex items-start">
-                             <span class="text-2xl mr-4">❤️</span>
-                            <div><strong class="block text-gray-800">心血管系統高效</strong>心臟較大，心搏量較高，可以用較低的心率完成相同強度的運動。</div>
-                        </li>
-                         <li class="flex items-start">
-                             <span class="text-2xl mr-4">⚡</span>
-                            <div><strong class="block text-gray-800">能量運用更佳</strong>擁有更多的糖原儲備，能更有效地運用無氧系統來應對高強度運動。</div>
-                        </li>
-                    </ul>
+                <div class="stat-card">
+                    <h3>最大漲幅</h3>
+                    <div class="stat-value positive">28.03%</div>
+                    <p style="margin-top:10px; font-size:0.9em; color:#666;">
+                        緯穎 (6669)
+                    </p>
                 </div>
-            </div>
-        </section>
-
-        <section id="risks-benefits" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">風險與益處的動態平衡</h2>
-            <p class="text-lg text-center max-w-3xl mx-auto text-gray-700 mb-8">
-                耐力訓練對兒童而言是把雙面刃。關鍵在於訓練方式是否得當。不恰當的訓練會放大風險，而科學、適齡的訓練則能帶來巨大益處。點擊下方按鈕，觀察不同訓練情境下風險與益處的變化。
-            </p>
-            <div class="flex justify-center space-x-2 md:space-x-4 mb-6">
-                <button id="untrainedBtn" class="chart-btn bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 transition-all">情境：訓練不足/不當</button>
-                <button id="trainedBtn" class="chart-btn bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-75 transition-all">情境：科學適齡訓練</button>
-            </div>
-            <div class="bg-white p-4 sm:p-6 rounded-lg shadow-xl border border-gray-200">
-                <div class="chart-container">
-                    <canvas id="riskBenefitChart"></canvas>
-                </div>
-            </div>
-        </section>
-
-        <section id="guidelines" class="mb-16 scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">專家指引：分齡建議</h2>
-             <p class="text-lg text-center max-w-3xl mx-auto text-gray-700 mb-8">
-                國際馬拉松醫學指導協會 (IMMDA) 等權威機構提出了明確的建議。核心原則是隨著年齡增長循序漸進，並始終將健康和樂趣放在首位。點擊不同年齡段，查看具體的訓練與參賽建議。
-            </p>
-            <div class="max-w-4xl mx-auto">
-                <div class="flex flex-col sm:flex-row justify-center border-b border-gray-300 mb-6">
-                    <button data-tab="age1" class="tab flex-1 py-3 px-4 text-lg font-medium text-gray-600 hover:bg-blue-100 transition-colors duration-300 active">12歲以下</button>
-                    <button data-tab="age2" class="tab flex-1 py-3 px-4 text-lg font-medium text-gray-600 hover:bg-blue-100 transition-colors duration-300">12-14歲</button>
-                    <button data-tab="age3" class="tab flex-1 py-3 px-4 text-lg font-medium text-gray-600 hover:bg-blue-100 transition-colors duration-300">15-17歲</button>
-                </div>
-
-                <div class="bg-white p-6 rounded-lg shadow-lg border border-gray-200">
-                    <div id="age1" class="tab-content">
-                        <h3 class="text-2xl font-bold mb-4 text-blue-700">12歲以下：玩樂中探索</h3>
-                        <ul class="list-disc list-inside space-y-3 text-gray-700">
-                            <li><strong>訓練重點：</strong>非結構性跑步遊戲、短跑、學習基本跑步技巧。重點是「玩」，而非「訓練」。</li>
-                            <li><strong>建議距離：</strong>趣味跑 (Fun Run)、最長不超過5公里。避免規律的長跑訓練。</li>
-                            <li><strong>核心理念：</strong>鼓勵參與多樣化的體育活動（游泳、自行車、球類），建立廣泛的運動基礎。</li>
-                            <li><strong>參賽建議：</strong>不建議參加任何有計時和排名壓力的長距離比賽。</li>
-                        </ul>
-                    </div>
-                    <div id="age2" class="tab-content hidden">
-                        <h3 class="text-2xl font-bold mb-4 text-blue-700">12-14歲：逐步系統化</h3>
-                        <ul class="list-disc list-inside space-y-3 text-gray-700">
-                            <li><strong>訓練重點：</strong>可以開始輕度的結構化訓練，每週2-3次，但仍需與其他運動結合。</li>
-                            <li><strong>建議距離：</strong>可以嘗試5公里或10公里的比賽，但訓練量需謹慎控制。</li>
-                            <li><strong>核心理念：</strong>開始學習訓練原則（如熱身、緩和、休息的重要性），但仍以享受過程為主。</li>
-                            <li><strong>參賽建議：</strong>每年參加的長距離比賽不應超過2-3場。絕對避免半程馬拉松。</li>
-                        </ul>
-                    </div>
-                    <div id="age3" class="tab-content hidden">
-                        <h3 class="text-2xl font-bold mb-4 text-blue-700">15-17歲：邁向耐力</h3>
-                        <ul class="list-disc list-inside space-y-3 text-gray-700">
-                            <li><strong>訓練重點：</strong>在專業指導下，可進行更系統的耐力訓練，但需密切關注身體反應，避免訓練過度。</li>
-                            <li><strong>建議距離：</strong>身體發育成熟的青少年可考慮挑戰半程馬拉松 (21公里)，但必須有至少一年以上的持續跑步經驗。</li>
-                            <li><strong>核心理念：</strong>學習傾聽身體的聲音，了解營養、恢復和心理調適的重要性。</li>
-                            <li><strong>參賽建議：</strong>強烈不建議參加全程馬拉松 (42公里)。需獲得醫師和教練的評估許可。</li>
-                        </ul>
-                    </div>
+                <div class="stat-card">
+                    <h3>最大跌幅</h3>
+                    <div class="stat-value negative">-17.47%</div>
+                    <p style="margin-top:10px; font-size:0.9em; color:#666;">
+                        台光電 (2383)
+                    </p>
                 </div>
             </div>
         </section>
         
-        <section id="conclusion" class="scroll-mt-20">
-            <h2 class="text-3xl font-bold text-center mb-4 text-gray-800">結論：更聰明的訓練方式</h2>
-            <p class="text-lg text-center max-w-3xl mx-auto text-gray-700 mb-10">
-                最終，問題不在於兒童「能否」跑長距離，而在於「應不應該」以及「如何」跑。一個更健康、可持續的觀點是，將童年視為建立運動基礎和熱情的黃金時期，而非追求極限成績的賽場。以下是一份給家長與教練的實踐清單。
+        
+        <section class="section">
+            <h2 class="section-title">💼 法人買賣分析</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:10px;">
+                📅 資料區間：近 5 個交易日 | 統計項目：外資、投信、自營商買賣超累計張數
             </p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <div class="bg-white p-6 rounded-lg shadow-md border flex items-center">
-                    <span class="text-3xl mr-4">🥇</span>
-                    <div><strong class="block text-gray-800">樂趣優先</strong>確保跑步充滿樂趣，避免給孩子施加壓力。</div>
+            <p style="color:#666; margin-bottom:20px;">
+                追蹤三大法人的買賣動向，了解主力資金流向與市場信心指標。
+            </p>
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">📊 法人動向統計</h3>
+            
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>有法人數據股票數</h3>
+                <div class="stat-value">22</div>
+            </div>
+            <div class="stat-card">
+                <h3>外資淨買賣超</h3>
+                <div class="stat-value positive">
+                    +210,821 張
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border flex items-center">
-                    <span class="text-3xl mr-4">👟</span>
-                    <div><strong class="block text-gray-800">裝備合適</strong>提供合適的跑鞋和衣物，保護足部和身體。</div>
+            </div>
+            <div class="stat-card">
+                <h3>投信淨買賣超</h3>
+                <div class="stat-value negative">
+                    -38,053 張
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border flex items-center">
-                    <span class="text-3xl mr-4">🏊</span>
-                    <div><strong class="block text-gray-800">多樣化運動</strong>鼓勵交叉訓練，全面發展身體素質，減少單一運動傷害。</div>
+            </div>
+            <div class="stat-card">
+                <h3>自營商淨買賣超</h3>
+                <div class="stat-value positive">
+                    +33,761 張
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border flex items-center">
-                    <span class="text-3xl mr-4">📈</span>
-                    <div><strong class="block text-gray-800">循序漸進</strong>慢慢增加跑步距離和頻率，避免突然增加訓練量。</div>
+            </div>
+            <div class="stat-card">
+                <h3>三大法人合計</h3>
+                <div class="stat-value positive">
+                    +206,529 張
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border flex items-center">
-                    <span class="text-3xl mr-4">👂</span>
-                    <div><strong class="block text-gray-800">傾聽身體</strong>教導孩子注意身體的疼痛或不適信號，並及時休息。</div>
+            </div>
+            <div class="stat-card">
+                <h3>法人買超家數</h3>
+                <div class="stat-value positive">15 支</div>
+            </div>
+        </div>
+        
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">🏆 法人買賣排行</h3>
+            
+        <div class="rankings-grid">
+            <div class="ranking-card">
+                <h3>外資買超前5名</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a></td>
+                <td>鴻海</td>
+                <td class="change-positive"><strong>+127,576</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2303.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2303</a></td>
+                <td>聯電</td>
+                <td class="change-positive"><strong>+69,660</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a></td>
+                <td>日月光投控</td>
+                <td class="change-positive"><strong>+35,238</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                <td>國巨</td>
+                <td class="change-positive"><strong>+30,023</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2412.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2412</a></td>
+                <td>中華電</td>
+                <td class="change-positive"><strong>+2,652</strong> 張</td>
+            </tr>
+            </tbody></table>
+            </div>
+            <div class="ranking-card">
+                <h3>外資賣超前5名</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2330.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2330</a></td>
+                <td>台積電</td>
+                <td class="change-negative"><strong>-29,094</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a></td>
+                <td>光寶科</td>
+                <td class="change-negative"><strong>-7,941</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a></td>
+                <td>智邦</td>
+                <td class="change-negative"><strong>-5,850</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2382.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2382</a></td>
+                <td>廣達</td>
+                <td class="change-negative"><strong>-5,278</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/4938.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">4938</a></td>
+                <td>和碩</td>
+                <td class="change-negative"><strong>-2,558</strong> 張</td>
+            </tr>
+            </tbody></table>
+            </div>
+            <div class="ranking-card">
+                <h3>投信買超前5名</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                <td>國巨</td>
+                <td class="change-positive"><strong>+6,312</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2330.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2330</a></td>
+                <td>台積電</td>
+                <td class="change-positive"><strong>+5,654</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a></td>
+                <td>日月光投控</td>
+                <td class="change-positive"><strong>+911</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a></td>
+                <td>緯穎</td>
+                <td class="change-positive"><strong>+399</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2059.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2059</a></td>
+                <td>川湖</td>
+                <td class="change-positive"><strong>+19</strong> 張</td>
+            </tr>
+            </tbody></table>
+            </div>
+            <div class="ranking-card">
+                <h3>三大法人合計前5名</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a></td>
+                <td>鴻海</td>
+                <td class="change-positive"><strong>+137,876</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2303.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2303</a></td>
+                <td>聯電</td>
+                <td class="change-positive"><strong>+50,764</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                <td>國巨</td>
+                <td class="change-positive"><strong>+39,918</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a></td>
+                <td>日月光投控</td>
+                <td class="change-positive"><strong>+38,587</strong> 張</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2412.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2412</a></td>
+                <td>中華電</td>
+                <td class="change-positive"><strong>+2,655</strong> 張</td>
+            </tr>
+            </tbody></table>
+            </div>
+        </div>
+        
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">💹 融資融券分析</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:10px;">
+                📅 資料區間：最新交易日 | 統計項目：融資/融券餘額與當日變化
+            </p>
+            <p style="color:#666; margin-bottom:20px;">
+                監控散戶情緒與槓桿風險。融資增加代表看多情緒，融券增加代表看空情緒。
+                券資比過高（>20%）可能代表空方力量強或有軋空風險。
+            </p>
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">📊 融資券整體狀況</h3>
+            
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>有融資券數據股票數</h3>
+                <div class="stat-value">22</div>
+            </div>
+            <div class="stat-card">
+                <h3>整體融資餘額</h3>
+                <div class="stat-value">244,383 張</div>
+            </div>
+            <div class="stat-card">
+                <h3>融資變化</h3>
+                <div class="stat-value positive">
+                    -1,897 張
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-md border flex items-center">
-                    <span class="text-3xl mr-4">👨‍⚕️</span>
-                    <div><strong class="block text-gray-800">專業意見</strong>在開始系統訓練或參賽前，諮詢兒科醫師或運動醫學專家的意見。</div>
+            </div>
+            <div class="stat-card">
+                <h3>整體融券餘額</h3>
+                <div class="stat-value">9,365 張</div>
+            </div>
+            <div class="stat-card">
+                <h3>融券變化</h3>
+                <div class="stat-value negative">
+                    +16 張
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>平均券資比</h3>
+                <div class="stat-value">3.83%</div>
+            </div>
+        </div>
+        
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">📈 融資券變化排行</h3>
+            
+        <div class="rankings-grid">
+            <div class="ranking-card">
+                <h3>融資增加前5名</h3>
+                <table><tbody>
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a></td>
+                    <td>鴻海</td>
+                    <td class="change-negative"><strong>+913</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2330.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2330</a></td>
+                    <td>台積電</td>
+                    <td class="change-negative"><strong>+510</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a></td>
+                    <td>智邦</td>
+                    <td class="change-negative"><strong>+385</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2454.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2454</a></td>
+                    <td>聯發科</td>
+                    <td class="change-negative"><strong>+268</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2303.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2303</a></td>
+                    <td>聯電</td>
+                    <td class="change-negative"><strong>+113</strong> 張</td>
+                </tr>
+                </tbody></table>
+            </div>
+            <div class="ranking-card">
+                <h3>融資減少前5名</h3>
+                <table><tbody>
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                    <td>國巨</td>
+                    <td class="change-positive"><strong>-3,520</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a></td>
+                    <td>光寶科</td>
+                    <td class="change-positive"><strong>-367</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/4938.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">4938</a></td>
+                    <td>和碩</td>
+                    <td class="change-positive"><strong>-221</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2357.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2357</a></td>
+                    <td>華碩</td>
+                    <td class="change-positive"><strong>-83</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2308.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2308</a></td>
+                    <td>台達電</td>
+                    <td class="change-positive"><strong>-78</strong> 張</td>
+                </tr>
+                </tbody></table>
+            </div>
+            <div class="ranking-card">
+                <h3>融券增加前5名</h3>
+                <table><tbody>
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a></td>
+                    <td>鴻海</td>
+                    <td class="change-neutral"><strong>+134</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                    <td>國巨</td>
+                    <td class="change-neutral"><strong>+89</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a></td>
+                    <td>光寶科</td>
+                    <td class="change-neutral"><strong>+71</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2382.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2382</a></td>
+                    <td>廣達</td>
+                    <td class="change-neutral"><strong>+5</strong> 張</td>
+                </tr>
+                
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/4938.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">4938</a></td>
+                    <td>和碩</td>
+                    <td class="change-neutral"><strong>+3</strong> 張</td>
+                </tr>
+                </tbody></table>
+            </div>
+            <div class="ranking-card" style="background:#fff3cd; border-color:#ffc107;">
+                <h3 style="color:#f59e0b;">⚠️ 高券資比警示（>20%）</h3>
+                <table><tbody>
+                <tr>
+                    <td><a href="https://tw.stock.yahoo.com/quote/2308.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2308</a></td>
+                    <td>台達電</td>
+                    <td class="change-negative"><strong>20.31</strong>%</td>
+                </tr>
+                </tbody></table>
+            </div>
+        </div>
+        
+        </section>
+        
+        <section class="section">
+            <h2 class="section-title">📈 月營收分析</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:10px;">
+                📅 資料區間：近 2 年月營收數據 | 統計項目：最新月份 YoY、MoM、累計年增率
+            </p>
+            <p style="color:#666; margin-bottom:20px;">
+                評估公司營運表現。年增率（YoY）反映同期成長，月增率（MoM）顯示短期趨勢，
+                累計年增率代表今年累計營收相較去年同期的成長率。
+            </p>
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">📊 營收統計摘要</h3>
+            
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>有營收數據股票數</h3>
+                <div class="stat-value">22</div>
+            </div>
+            <div class="stat-card">
+                <h3>平均年增率</h3>
+                <div class="stat-value positive">
+                    32.92%
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>平均月增率</h3>
+                <div class="stat-value positive">
+                    9.91%
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>營收成長家數</h3>
+                <div class="stat-value positive">19 支</div>
+            </div>
+            <div class="stat-card">
+                <h3>營收衰退家數</h3>
+                <div class="stat-value negative">3 支</div>
+            </div>
+        </div>
+        
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">🏆 營收成長排行</h3>
+            
+        <div class="rankings-grid">
+            <div class="ranking-card">
+                <h3>年增率前5名</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a></td>
+                <td>緯穎</td>
+                <td>86316.60M</td>
+                <td class="change-positive"><strong>+150.16%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a></td>
+                <td>智邦</td>
+                <td>24318.09M</td>
+                <td class="change-positive"><strong>+142.04%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3017.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3017</a></td>
+                <td>奇鋐</td>
+                <td>14503.31M</td>
+                <td class="change-positive"><strong>+128.35%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2059.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2059</a></td>
+                <td>川湖</td>
+                <td>1507.10M</td>
+                <td class="change-positive"><strong>+83.35%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2308.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2308</a></td>
+                <td>台達電</td>
+                <td>57060.78M</td>
+                <td class="change-positive"><strong>+53.83%</strong> YoY</td>
+            </tr>
+            </tbody></table>
+            </div>
+            <div class="ranking-card">
+                <h3>月增率前5名</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/4938.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">4938</a></td>
+                <td>和碩</td>
+                <td>114908.88M</td>
+                <td class="change-positive"><strong>+74.52%</strong> MoM</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a></td>
+                <td>鴻海</td>
+                <td>837067.57M</td>
+                <td class="change-positive"><strong>+38.01%</strong> MoM</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2357.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2357</a></td>
+                <td>華碩</td>
+                <td>82594.91M</td>
+                <td class="change-positive"><strong>+31.49%</strong> MoM</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2454.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2454</a></td>
+                <td>聯發科</td>
+                <td>54330.06M</td>
+                <td class="change-positive"><strong>+21.96%</strong> MoM</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2382.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2382</a></td>
+                <td>廣達</td>
+                <td>184108.51M</td>
+                <td class="change-positive"><strong>+20.48%</strong> MoM</td>
+            </tr>
+            </tbody></table>
+            </div>
+            <div class="ranking-card">
+                <h3>累計年增率前5名</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a></td>
+                <td>緯穎</td>
+                <td>86316.60M</td>
+                <td class="change-positive"><strong>+168.74%</strong> 累計</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a></td>
+                <td>智邦</td>
+                <td>24318.09M</td>
+                <td class="change-positive"><strong>+146.74%</strong> 累計</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3017.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3017</a></td>
+                <td>奇鋐</td>
+                <td>14503.31M</td>
+                <td class="change-positive"><strong>+80.63%</strong> 累計</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2059.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2059</a></td>
+                <td>川湖</td>
+                <td>1507.10M</td>
+                <td class="change-positive"><strong>+78.51%</strong> 累計</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2383.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2383</a></td>
+                <td>台光電</td>
+                <td>8008.33M</td>
+                <td class="change-positive"><strong>+51.33%</strong> 累計</td>
+            </tr>
+            </tbody></table>
+            </div>
+            <div class="ranking-card" style="background:#fff3cd; border-color:#ffc107;">
+                <h3 style="color:#f59e0b;">⚠️ 營收衰退警示</h3>
+                <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3661.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3661</a></td>
+                <td>世芯-KY</td>
+                <td>1674.28M</td>
+                <td class="change-negative"><strong>-68.42%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3034.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3034</a></td>
+                <td>聯詠</td>
+                <td>8278.30M</td>
+                <td class="change-negative"><strong>-7.18%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3008.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3008</a></td>
+                <td>大立光</td>
+                <td>6235.25M</td>
+                <td class="change-negative"><strong>-4.43%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2379.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2379</a></td>
+                <td>瑞昱</td>
+                <td>10034.21M</td>
+                <td class="change-positive"><strong>+2.08%</strong> YoY</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2412.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2412</a></td>
+                <td>中華電</td>
+                <td>20188.53M</td>
+                <td class="change-positive"><strong>+3.60%</strong> YoY</td>
+            </tr>
+            </tbody></table>
+            </div>
+        </div>
+        
+        </section>
+        
+        
+        
+        <style>
+        .pattern-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stock-pattern-card {
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .stock-pattern-card h4 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .pattern-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .pattern-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .pattern-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        .pattern-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .pattern-badge.positive {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .pattern-badge.negative {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .pattern-badge.neutral {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+
+        .pattern-confidence {
+            font-size: 0.85em;
+            color: #6b7280;
+            background: #f3f4f6;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .pattern-description {
+            color: #4b5563;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+
+        .pattern-detail {
+            color: #6b7280;
+            font-size: 0.9em;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        </style>
+        
+        <section class="section">
+            <h2 class="section-title">📈 線型型態分析</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:10px;">
+                📅 資料區間：近 3 個月交易數據 | 統計項目：雙頂/雙底、頭肩型態、三角形等經典型態
+            </p>
+            <p style="color:#666; margin-bottom:20px;">
+                透過技術分析識別股票價格走勢中的經典圖表型態，包括反轉型態（雙頂/雙底、頭肩型態）
+                和持續型態（三角形），協助判斷未來走勢方向。
+            </p>
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">📊 型態統計摘要</h3>
+            
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>識別股票數</h3>
+                <div class="stat-value">12</div>
+            </div>
+            <div class="stat-card">
+                <h3>總型態數</h3>
+                <div class="stat-value">16</div>
+            </div>
+            <div class="stat-card">
+                <h3>看漲型態</h3>
+                <div class="stat-value positive">7</div>
+            </div>
+            <div class="stat-card">
+                <h3>看跌型態</h3>
+                <div class="stat-value negative">9</div>
+            </div>
+        </div>
+        
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">📋 型態分布</h3>
+            <div class="signal-grid">
+            <div class="signal-card bullish">
+                <h3>雙底</h3>
+                <p style="font-size:2em; font-weight:bold; margin:10px 0;">5 支股票</p>
+            </div>
+            
+            <div class="signal-card bearish">
+                <h3>頭肩頂</h3>
+                <p style="font-size:2em; font-weight:bold; margin:10px 0;">4 支股票</p>
+            </div>
+            
+            <div class="signal-card bearish">
+                <h3>雙頂</h3>
+                <p style="font-size:2em; font-weight:bold; margin:10px 0;">3 支股票</p>
+            </div>
+            
+            <div class="signal-card bullish">
+                <h3>上升三角形</h3>
+                <p style="font-size:2em; font-weight:bold; margin:10px 0;">1 支股票</p>
+            </div>
+            
+            <div class="signal-card bullish">
+                <h3>頭肩底</h3>
+                <p style="font-size:2em; font-weight:bold; margin:10px 0;">1 支股票</p>
+            </div>
+            
+            <div class="signal-card bearish">
+                <h3>下降三角形</h3>
+                <p style="font-size:2em; font-weight:bold; margin:10px 0;">2 支股票</p>
+            </div>
+            </div>
+
+            <h3 style="color:#667eea; margin-top:30px; margin-bottom:15px;">🔍 詳細型態清單</h3>
+            <div class="pattern-details-grid">
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a> - 鴻海</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙底</span>
+                        <span class="pattern-badge positive">看漲</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 208.00 附近形成雙底型態</p>
+                    <p class="pattern-detail">價格兩次測試低點後反彈，暗示下跌動能減弱</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/2454.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2454</a> - 聯發科</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">頭肩頂</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: high</span>
+                    </div>
+                    <p class="pattern-description">頭部 1545.00, 左肩 1430.00, 右肩 1370.00</p>
+                    <p class="pattern-detail">三個峰值，中間最高，形成頭肩型態</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/2382.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2382</a> - 廣達</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙底</span>
+                        <span class="pattern-badge positive">看漲</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 279.00 附近形成雙底型態</p>
+                    <p class="pattern-detail">價格兩次測試低點後反彈，暗示下跌動能減弱</p>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">頭肩頂</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: high</span>
+                    </div>
+                    <p class="pattern-description">頭部 314.00, 左肩 288.00, 右肩 297.50</p>
+                    <p class="pattern-detail">三個峰值，中間最高，形成頭肩型態</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a> - 日月光投控</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙底</span>
+                        <span class="pattern-badge positive">看漲</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 165.00 附近形成雙底型態</p>
+                    <p class="pattern-detail">價格兩次測試低點後反彈，暗示下跌動能減弱</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/2303.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2303</a> - 聯電</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙頂</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 47.30 附近形成雙頂型態</p>
+                    <p class="pattern-detail">價格兩次測試高點後回落，暗示上漲動能減弱</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/2357.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2357</a> - 華碩</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙頂</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 714.00 附近形成雙頂型態</p>
+                    <p class="pattern-detail">價格兩次測試高點後回落，暗示上漲動能減弱</p>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">上升三角形</span>
+                        <span class="pattern-badge positive">看漲</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">低點逐步抬高，高點約在 708.67</p>
+                    <p class="pattern-detail">高點持平，低點逐步抬高，買盤力道增強</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a> - 緯穎</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">頭肩底</span>
+                        <span class="pattern-badge positive">看漲</span>
+                        <span class="pattern-confidence">信心度: high</span>
+                    </div>
+                    <p class="pattern-description">頭部 3020.00, 左肩 3155.00, 右肩 3210.00</p>
+                    <p class="pattern-detail">三個谷底，中間最低，形成倒頭肩型態</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a> - 光寶科</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙底</span>
+                        <span class="pattern-badge positive">看漲</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 158.50 附近形成雙底型態</p>
+                    <p class="pattern-detail">價格兩次測試低點後反彈，暗示下跌動能減弱</p>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">下降三角形</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">高點逐步降低，低點約在 159.33</p>
+                    <p class="pattern-detail">低點持平，高點逐步降低，賣盤力道增強</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/2379.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2379</a> - 瑞昱</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙頂</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 557.00 附近形成雙頂型態</p>
+                    <p class="pattern-detail">價格兩次測試高點後回落，暗示上漲動能減弱</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/3034.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3034</a> - 聯詠</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">頭肩頂</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: high</span>
+                    </div>
+                    <p class="pattern-description">頭部 477.50, 左肩 445.00, 右肩 429.50</p>
+                    <p class="pattern-detail">三個峰值，中間最高，形成頭肩型態</p>
+                </div>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">下降三角形</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">高點逐步降低，低點約在 411.00</p>
+                    <p class="pattern-detail">低點持平，高點逐步降低，賣盤力道增強</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/3008.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3008</a> - 大立光</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">頭肩頂</span>
+                        <span class="pattern-badge negative">看跌</span>
+                        <span class="pattern-confidence">信心度: high</span>
+                    </div>
+                    <p class="pattern-description">頭部 2530.00, 左肩 2390.00, 右肩 2310.00</p>
+                    <p class="pattern-detail">三個峰值，中間最高，形成頭肩型態</p>
+                </div>
+                
+            </div>
+            
+            <div class="stock-pattern-card">
+                <h4><a href="https://tw.stock.yahoo.com/quote/4938.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">4938</a> - 和碩</h4>
+                
+                <div class="pattern-item">
+                    <div class="pattern-header">
+                        <span class="pattern-name">雙底</span>
+                        <span class="pattern-badge positive">看漲</span>
+                        <span class="pattern-confidence">信心度: medium</span>
+                    </div>
+                    <p class="pattern-description">在 69.70 附近形成雙底型態</p>
+                    <p class="pattern-detail">價格兩次測試低點後反彈，暗示下跌動能減弱</p>
+                </div>
+                
+            </div>
+            </div>
+        </section>
+        
+        
+        <section class="section">
+            <h2 class="section-title">🏆 排行榜</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:15px;">
+                📅 資料區間：近 1 個月交易數據 | 排行依據：當日表現與統計數據
+            </p>
+            <div class="rankings-grid">
+                <div class="ranking-card">
+                    <h3>📈 漲幅前5名</h3>
+                    <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a></td>
+                <td>緯穎</td>
+                <td>4020.00</td>
+                <td class="change-positive"><strong>+28.03%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                <td>國巨</td>
+                <td>214.50</td>
+                <td class="change-positive"><strong>+21.88%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2059.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2059</a></td>
+                <td>川湖</td>
+                <td>3740.00</td>
+                <td class="change-positive"><strong>+16.15%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3017.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3017</a></td>
+                <td>奇鋐</td>
+                <td>1165.00</td>
+                <td class="change-positive"><strong>+14.78%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2308.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2308</a></td>
+                <td>台達電</td>
+                <td>1005.00</td>
+                <td class="change-positive"><strong>+12.54%</strong></td>
+            </tr>
+            </tbody></table>
+                </div>
+                <div class="ranking-card">
+                    <h3>📉 跌幅前5名</h3>
+                    <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2383.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2383</a></td>
+                <td>台光電</td>
+                <td>1110.00</td>
+                <td class="change-negative"><strong>-17.47%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3661.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3661</a></td>
+                <td>世芯-KY</td>
+                <td>3160.00</td>
+                <td class="change-negative"><strong>-14.59%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a></td>
+                <td>光寶科</td>
+                <td>165.00</td>
+                <td class="change-negative"><strong>-9.84%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a></td>
+                <td>智邦</td>
+                <td>909.00</td>
+                <td class="change-negative"><strong>-9.55%</strong></td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3034.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3034</a></td>
+                <td>聯詠</td>
+                <td>418.50</td>
+                <td class="change-negative"><strong>-5.53%</strong></td>
+            </tr>
+            </tbody></table>
+                </div>
+                <div class="ranking-card">
+                    <h3>💹 成交量前5名</h3>
+                    <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                <td>國巨</td>
+                <td>214.50</td>
+                <td>7,931,000</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a></td>
+                <td>鴻海</td>
+                <td>238.50</td>
+                <td>3,812,000</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2330.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2330</a></td>
+                <td>台積電</td>
+                <td>1440.00</td>
+                <td>3,752,000</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2382.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2382</a></td>
+                <td>廣達</td>
+                <td>291.00</td>
+                <td>1,570,000</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a></td>
+                <td>日月光投控</td>
+                <td>191.00</td>
+                <td>1,154,000</td>
+            </tr>
+            </tbody></table>
+                </div>
+                <div class="ranking-card">
+                    <h3>📊 波動率前5名</h3>
+                    <table><tbody>
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a></td>
+                <td>緯穎</td>
+                <td>4020.00</td>
+                <td>336.21</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/2059.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2059</a></td>
+                <td>川湖</td>
+                <td>3740.00</td>
+                <td>276.05</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3661.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3661</a></td>
+                <td>世芯-KY</td>
+                <td>3160.00</td>
+                <td>166.67</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3008.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3008</a></td>
+                <td>大立光</td>
+                <td>2285.00</td>
+                <td>88.43</td>
+            </tr>
+            
+            <tr>
+                <td><a href="https://tw.stock.yahoo.com/quote/3017.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3017</a></td>
+                <td>奇鋐</td>
+                <td>1165.00</td>
+                <td>86.60</td>
+            </tr>
+            </tbody></table>
                 </div>
             </div>
         </section>
-    </main>
-
-    <footer class="bg-gray-800 text-white mt-16">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 text-center">
-            <p>&copy; 2025 兒童運動健康分析。本資訊僅供參考，不能取代專業醫療建議。</p>
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        
+        
+        <section class="section">
+            <h2 class="section-title">🎯 技術信號</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:15px;">
+                📅 資料區間：近 1 個月交易數據 | 技術指標：MA5、MA10、MA20 均線系統
+            </p>
+            <div class="signal-grid">
+                <div class="signal-card bullish">
+                    <h3>📈 看漲信號 (13)</h3>
+                    <p style="margin-bottom:10px; color:#065f46; font-size:0.9em;">價格 > MA20</p>
+                    <ul class="signal-list">
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2330.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2330</a> 台積電 -
+                價格: 1440.00 |
+                MA5: 1462.00 |
+                MA10: 1454.00 |
+                MA20: 1404.25
+            </li>
             
-            const chartData = {
-                labels: ['生長板損傷風險', '過度使用傷害', '心理倦怠', '心肺功能提升', '肌力與協調', '自信心建立'],
-                untrained: {
-                    risks: [8, 9, 7],
-                    benefits: [4, 5, 3],
-                    backgroundColor: ['rgba(239, 68, 68, 0.6)', 'rgba(239, 68, 68, 0.6)', 'rgba(239, 68, 68, 0.6)', 'rgba(34, 197, 94, 0.6)', 'rgba(34, 197, 94, 0.6)', 'rgba(34, 197, 94, 0.6)'],
-                    borderColor: ['rgb(239, 68, 68)', 'rgb(239, 68, 68)', 'rgb(239, 68, 68)', 'rgb(34, 197, 94)', 'rgb(34, 197, 94)', 'rgb(34, 197, 94)'],
-                },
-                trained: {
-                    risks: [3, 4, 2],
-                    benefits: [8, 8, 9],
-                    backgroundColor: ['rgba(239, 68, 68, 0.6)', 'rgba(239, 68, 68, 0.6)', 'rgba(239, 68, 68, 0.6)', 'rgba(34, 197, 94, 0.6)', 'rgba(34, 197, 94, 0.6)', 'rgba(34, 197, 94, 0.6)'],
-                    borderColor: ['rgb(239, 68, 68)', 'rgb(239, 68, 68)', 'rgb(239, 68, 68)', 'rgb(34, 197, 94)', 'rgb(34, 197, 94)', 'rgb(34, 197, 94)'],
-                }
-            };
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a> 鴻海 -
+                價格: 238.50 |
+                MA5: 237.00 |
+                MA10: 225.50 |
+                MA20: 224.45
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2308.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2308</a> 台達電 -
+                價格: 1005.00 |
+                MA5: 1011.80 |
+                MA10: 1012.00 |
+                MA20: 958.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a> 日月光投控 -
+                價格: 191.00 |
+                MA5: 195.00 |
+                MA10: 186.60 |
+                MA20: 177.75
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2303.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2303</a> 聯電 -
+                價格: 45.25 |
+                MA5: 45.61 |
+                MA10: 45.34 |
+                MA20: 44.90
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2412.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2412</a> 中華電 -
+                價格: 133.50 |
+                MA5: 133.20 |
+                MA10: 132.75 |
+                MA20: 133.20
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2357.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2357</a> 華碩 -
+                價格: 695.00 |
+                MA5: 691.20 |
+                MA10: 688.60 |
+                MA20: 686.05
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a> 緯穎 -
+                價格: 4020.00 |
+                MA5: 3963.00 |
+                MA10: 3778.00 |
+                MA20: 3524.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3017.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3017</a> 奇鋐 -
+                價格: 1165.00 |
+                MA5: 1157.00 |
+                MA10: 1168.50 |
+                MA20: 1108.05
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a> 國巨 -
+                價格: 214.50 |
+                MA5: 201.60 |
+                MA10: 189.60 |
+                MA20: 182.18
+            </li>
+            </ul>
+                </div>
+                <div class="signal-card bearish">
+                    <h3>📉 看跌信號 (9)</h3>
+                    <p style="margin-bottom:10px; color:#991b1b; font-size:0.9em;">價格 < MA20</p>
+                    <ul class="signal-list">
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2454.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2454</a> 聯發科 -
+                價格: 1315.00 |
+                MA5: 1331.00 |
+                MA10: 1326.50 |
+                MA20: 1324.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2382.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2382</a> 廣達 -
+                價格: 291.00 |
+                MA5: 291.30 |
+                MA10: 291.05 |
+                MA20: 291.77
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a> 智邦 -
+                價格: 909.00 |
+                MA5: 941.60 |
+                MA10: 981.30 |
+                MA20: 1005.90
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a> 光寶科 -
+                價格: 165.00 |
+                MA5: 165.60 |
+                MA10: 165.75 |
+                MA20: 169.02
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2383.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2383</a> 台光電 -
+                價格: 1110.00 |
+                MA5: 1118.00 |
+                MA10: 1147.50 |
+                MA20: 1204.00
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2379.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2379</a> 瑞昱 -
+                價格: 535.00 |
+                MA5: 535.20 |
+                MA10: 538.10 |
+                MA20: 538.60
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3661.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3661</a> 世芯-KY -
+                價格: 3160.00 |
+                MA5: 3211.00 |
+                MA10: 3219.00 |
+                MA20: 3315.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3034.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3034</a> 聯詠 -
+                價格: 418.50 |
+                MA5: 415.10 |
+                MA10: 413.80 |
+                MA20: 421.32
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3008.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3008</a> 大立光 -
+                價格: 2285.00 |
+                MA5: 2254.00 |
+                MA10: 2276.50 |
+                MA20: 2329.00
+            </li>
+            </ul>
+                </div>
+                <div class="signal-card golden">
+                    <h3>⭐ 黃金交叉 (10)</h3>
+                    <p style="margin-bottom:10px; color:#b45309; font-size:0.9em;">MA5 > MA10 > MA20</p>
+                    <ul class="signal-list">
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2330.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2330</a> 台積電 -
+                價格: 1440.00 |
+                MA5: 1462.00 |
+                MA10: 1454.00 |
+                MA20: 1404.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a> 鴻海 -
+                價格: 238.50 |
+                MA5: 237.00 |
+                MA10: 225.50 |
+                MA20: 224.45
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2454.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2454</a> 聯發科 -
+                價格: 1315.00 |
+                MA5: 1331.00 |
+                MA10: 1326.50 |
+                MA20: 1324.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a> 日月光投控 -
+                價格: 191.00 |
+                MA5: 195.00 |
+                MA10: 186.60 |
+                MA20: 177.75
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2303.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2303</a> 聯電 -
+                價格: 45.25 |
+                MA5: 45.61 |
+                MA10: 45.34 |
+                MA20: 44.90
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2357.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2357</a> 華碩 -
+                價格: 695.00 |
+                MA5: 691.20 |
+                MA10: 688.60 |
+                MA20: 686.05
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a> 緯穎 -
+                價格: 4020.00 |
+                MA5: 3963.00 |
+                MA10: 3778.00 |
+                MA20: 3524.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a> 國巨 -
+                價格: 214.50 |
+                MA5: 201.60 |
+                MA10: 189.60 |
+                MA20: 182.18
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2395.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2395</a> 研華 -
+                價格: 324.50 |
+                MA5: 324.60 |
+                MA10: 323.85 |
+                MA20: 322.62
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/4938.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">4938</a> 和碩 -
+                價格: 76.50 |
+                MA5: 75.46 |
+                MA10: 73.54 |
+                MA20: 72.46
+            </li>
+            </ul>
+                </div>
+                <div class="signal-card death">
+                    <h3>💀 死亡交叉 (6)</h3>
+                    <p style="margin-bottom:10px; color:#4338ca; font-size:0.9em;">MA5 < MA10 < MA20</p>
+                    <ul class="signal-list">
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a> 智邦 -
+                價格: 909.00 |
+                MA5: 941.60 |
+                MA10: 981.30 |
+                MA20: 1005.90
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a> 光寶科 -
+                價格: 165.00 |
+                MA5: 165.60 |
+                MA10: 165.75 |
+                MA20: 169.02
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2383.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2383</a> 台光電 -
+                價格: 1110.00 |
+                MA5: 1118.00 |
+                MA10: 1147.50 |
+                MA20: 1204.00
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/2379.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2379</a> 瑞昱 -
+                價格: 535.00 |
+                MA5: 535.20 |
+                MA10: 538.10 |
+                MA20: 538.60
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3661.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3661</a> 世芯-KY -
+                價格: 3160.00 |
+                MA5: 3211.00 |
+                MA10: 3219.00 |
+                MA20: 3315.25
+            </li>
+            
+            <li>
+                <a href="https://tw.stock.yahoo.com/quote/3008.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3008</a> 大立光 -
+                價格: 2285.00 |
+                MA5: 2254.00 |
+                MA10: 2276.50 |
+                MA20: 2329.00
+            </li>
+            </ul>
+                </div>
+            </div>
+        </section>
+        
+        
+        <section class="section">
+            <h2 class="section-title">📋 完整股票清單</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:15px;">
+                📅 資料區間：近 1 個月交易數據 | 數據包含：價格、均線、技術指標、市值、本益比、最新新聞
+            </p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>代碼</th>
+                        <th>名稱</th>
+                        <th>目前價格</th>
+                        <th>當日漲跌</th>
+                        <th>近月漲跌</th>
+                        <th>MA5</th>
+                        <th>MA10</th>
+                        <th>MA20</th>
+                        <th>波動率</th>
+                        <th>成交量</th>
+                        <th>市值</th>
+                        <th>本益比</th>
+                        <th>最新新聞</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+            <tr>
+                <td>1</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2330.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2330</a></td>
+                <td>台積電</td>
+                <td><strong>1440.00</strong></td>
+                <td class="change-negative"><strong>-1.37%</strong></td>
+                <td class="change-positive">+7.46%</td>
+                <td>1462.00</td>
+                <td>1454.00</td>
+                <td>1404.25</td>
+                <td>62.81</td>
+                <td>3,752,000</td>
+                <td>37.34T</td>
+                <td>25.82</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://tw.stock.yahoo.com/news/%E5%8F%B0%E5%8C%97%E8%82%A1%E5%B8%82-ai%E7%81%AB-%E5%8F%B0%E7%A9%8D%E9%9B%BB-%E5%B7%9D%E6%B9%96%E7%87%9F%E9%81%8B%E7%9C%8B%E5%A2%9E-002549723.html" target="_blank" title="《台北股市》AI火 台積電、川湖營運看增 - Yahoo股市">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    《台北股市》AI火 台積電、川湖營運看增 - Yahoo股市
+                    <span class="news-publisher">[Yahoo股市]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://finance.ettoday.net/news/3054373" target="_blank" title="台積電跌25元至1455　台股大跌逾261點失守27500 - ETtoday財經雲">
+                    <span style="color:#ef4444; font-weight:bold; margin-right:5px;" title="看空: 台積電下跌、台股大跌、失守重要關卡">📉</span>
+                    台積電跌25元至1455　台股大跌逾261點失守27500 - ETtoday財經雲
+                    <span class="news-publisher">[ETtoday財經雲]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://ec.ltn.com.tw/article/breakingnews/5219490" target="_blank" title="台股開盤》台積電、力積電等權值股熄火 指數跌逾250點失守27500點 - 自由財經">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    台股開盤》台積電、力積電等權值股熄火 指數跌逾250點失守27500點 - 自由財經
+                    <span class="news-publisher">[自由財經]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>2</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2317.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2317</a></td>
+                <td>鴻海</td>
+                <td><strong>238.50</strong></td>
+                <td class="change-negative"><strong>-1.65%</strong></td>
+                <td class="change-positive">+7.92%</td>
+                <td>237.00</td>
+                <td>225.50</td>
+                <td>224.45</td>
+                <td>10.09</td>
+                <td>3,812,000</td>
+                <td>3.31T</td>
+                <td>18.56</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://ec.ltn.com.tw/article/breakingnews/5219867" target="_blank" title="東元董座利明献：股價強漲「很意外」 鴻海合作不僅限於美國市場 - 自由財經">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    東元董座利明献：股價強漲「很意外」 鴻海合作不僅限於美國市場 - 自由財經
+                    <span class="news-publisher">[自由財經]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.taiwanhot.net/news/1117621/%E8%BC%9D%E9%81%94%E3%80%81%E8%98%8B%E6%9E%9C%E9%9B%99%E6%A6%82%E5%BF%B5%E5%8A%A0%E6%8C%81+%E9%B4%BB%E6%B5%B722%E6%97%A5%E8%82%A1%E5%83%B9%E9%96%8B%E4%BD%8E%E6%94%B6%E9%AB%98%E4%BB%A5%E9%80%A36%E6%BC%B2%E4%BD%9C%E6%94%B6" target="_blank" title="輝達、蘋果雙概念加持 鴻海22日股價開低收高以連6漲作收 - 台灣好新聞">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    輝達、蘋果雙概念加持 鴻海22日股價開低收高以連6漲作收 - 台灣好新聞
+                    <span class="news-publisher">[台灣好新聞]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://ww2.money-link.com.tw/RealtimeNews/NewsContent.aspx?SN=5976054001&PU=0010" target="_blank" title="《證交所》今日單一證券鉅額成交股票：鴻海、文曄、美利達 - 富聯網">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    《證交所》今日單一證券鉅額成交股票：鴻海、文曄、美利達 - 富聯網
+                    <span class="news-publisher">[富聯網]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>3</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2454.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2454</a></td>
+                <td>聯發科</td>
+                <td><strong>1315.00</strong></td>
+                <td class="change-negative"><strong>-1.13%</strong></td>
+                <td class="change-negative">-4.36%</td>
+                <td>1331.00</td>
+                <td>1326.50</td>
+                <td>1324.25</td>
+                <td>21.29</td>
+                <td>533,000</td>
+                <td>2.10T</td>
+                <td>19.69</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://tw.tradingview.com/news/reuters.com,2025-10-22:newsml_MOP70qk8M:0/" target="_blank" title="重大資訊公告檔-聯發科 - TradingView">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    重大資訊公告檔-聯發科 - TradingView
+                    <span class="news-publisher">[TradingView]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://ww2.money-link.com.tw/realtimenews/NewsContent.aspx?SN=5976064001&PU=1002" target="_blank" title="《半導體》聯發科第三季財報10月31日提報董事會 - 富聯網">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    《半導體》聯發科第三季財報10月31日提報董事會 - 富聯網
+                    <span class="news-publisher">[富聯網]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>4</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2308.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2308</a></td>
+                <td>台達電</td>
+                <td><strong>1005.00</strong></td>
+                <td class="change-negative"><strong>-1.47%</strong></td>
+                <td class="change-positive">+12.54%</td>
+                <td>1011.80</td>
+                <td>1012.00</td>
+                <td>958.25</td>
+                <td>65.29</td>
+                <td>282,000</td>
+                <td>2.61T</td>
+                <td>60.07</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174454261" target="_blank" title="2308 台達電- 台達電（2308） 投資價值台達電作為全球電源管理與散熱解...｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    2308 台達電- 台達電（2308） 投資價值台達電作為全球電源管理與散熱解...｜CMoney 股市爆料同...
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://tw.stock.yahoo.com/news/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E5%B4%A9%E8%B7%8C25%E5%85%83-%E8%81%AF%E7%99%BC%E7%A7%91-%E5%8F%B0%E9%81%94%E9%9B%BB-%E5%BB%A3%E9%81%94%E9%BD%8A%E8%B7%8C1-%E5%8F%B0%E8%82%A1%E9%96%8B%E4%BD%8E%E8%B7%8C261%E9%BB%9E-010800987.html" target="_blank" title="台積電崩跌25元！聯發科、台達電、廣達齊跌1% 台股開低跌261點「失守27500大關」 - 奇摩股市">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    台積電崩跌25元！聯發科、台達電、廣達齊跌1% 台股開低跌261點「失守27500大關」 - 奇摩股市
+                    <span class="news-publisher">[奇摩股市]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://tw.stock.yahoo.com/news/%E5%8F%B0%E7%A9%8D%E9%9B%BB%E5%B4%A9%E8%B7%8C25%E5%85%83-%E8%81%AF%E7%99%BC%E7%A7%91-%E5%8F%B0%E9%81%94%E9%9B%BB-%E5%BB%A3%E9%81%94%E9%BD%8A%E8%B7%8C1-%E5%8F%B0%E8%82%A1%E9%96%8B%E4%BD%8E%E8%B7%8C261%E9%BB%9E-010800987.html" target="_blank" title="台積電崩跌25元！聯發科、台達電、廣達齊跌1% 台股開低跌261點「失守27500大關」 - Yahoo股市">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    台積電崩跌25元！聯發科、台達電、廣達齊跌1% 台股開低跌261點「失守27500大關」 - Yahoo股市
+                    <span class="news-publisher">[Yahoo股市]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>5</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2382.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2382</a></td>
+                <td>廣達</td>
+                <td><strong>291.00</strong></td>
+                <td class="change-positive"><strong>+0.52%</strong></td>
+                <td class="change-positive">+1.57%</td>
+                <td>291.30</td>
+                <td>291.05</td>
+                <td>291.77</td>
+                <td>7.08</td>
+                <td>1,570,000</td>
+                <td>1.12T</td>
+                <td>16.62</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://ec.ltn.com.tw/article/breakingnews/5220314" target="_blank" title="廣達楊麒令：AI需求持續爆發 集團拍板明年新目標 - 自由財經">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    廣達楊麒令：AI需求持續爆發 集團拍板明年新目標 - 自由財經
+                    <span class="news-publisher">[自由財經]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://ec.ltn.com.tw/article/breakingnews/5220353" target="_blank" title="廣達楊麒令：台灣擴廠太麻煩 強化佈局美泰AI產能 - 自由財經">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    廣達楊麒令：台灣擴廠太麻煩 強化佈局美泰AI產能 - 自由財經
+                    <span class="news-publisher">[自由財經]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://news.cnyes.com/news/id/6197945" target="_blank" title="廣達楊麒令：GB300出貨量Q4將超過GB200 持續擴充美國、泰國產能 - news.cnyes.com">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    廣達楊麒令：GB300出貨量Q4將超過GB200 持續擴充美國、泰國產能 - news.cnyes.com
+                    <span class="news-publisher">[news.cnyes.com]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>6</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/3711.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3711</a></td>
+                <td>日月光投控</td>
+                <td><strong>191.00</strong></td>
+                <td class="change-negative"><strong>-1.04%</strong></td>
+                <td class="change-positive">+9.46%</td>
+                <td>195.00</td>
+                <td>186.60</td>
+                <td>177.75</td>
+                <td>12.15</td>
+                <td>1,154,000</td>
+                <td>830.70B</td>
+                <td>25.37</td>
+                <td><span style="color:#999;">無新聞</span></td>
+            </tr>
+            
+            <tr>
+                <td>7</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2303.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2303</a></td>
+                <td>聯電</td>
+                <td><strong>45.25</strong></td>
+                <td class="change-negative"><strong>-0.55%</strong></td>
+                <td class="change-positive">+3.08%</td>
+                <td>45.61</td>
+                <td>45.34</td>
+                <td>44.90</td>
+                <td>0.68</td>
+                <td>749,000</td>
+                <td>568.17B</td>
+                <td>13.55</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://udn.com/news/story/7240/9088553" target="_blank" title="電源效率再進化 聯電55nm BCD 火力鎖定手機到車用 - 聯合新聞網">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    電源效率再進化 聯電55nm BCD 火力鎖定手機到車用 - 聯合新聞網
+                    <span class="news-publisher">[聯合新聞網]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://money.udn.com/money/story/5612/9088649?from=edn_hottestlist_rank" target="_blank" title="聯電推55奈米 BCD 平台 提升行動裝置、消費性電子與汽車應用的電源效率 - 經濟日報">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    聯電推55奈米 BCD 平台 提升行動裝置、消費性電子與汽車應用的電源效率 - 經濟日報
+                    <span class="news-publisher">[經濟日報]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.moneyweekly.com.tw/ArticleData/Info/Article/201398" target="_blank" title="智原大漲多頭確立！ 聯電集團股可以期待 - 理財周刊">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    智原大漲多頭確立！ 聯電集團股可以期待 - 理財周刊
+                    <span class="news-publisher">[理財周刊]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>8</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2412.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2412</a></td>
+                <td>中華電</td>
+                <td><strong>133.50</strong></td>
+                <td class="change-neutral"><strong>0.00%</strong></td>
+                <td class="change-neutral">0.00%</td>
+                <td>133.20</td>
+                <td>132.75</td>
+                <td>133.20</td>
+                <td>0.77</td>
+                <td>77,000</td>
+                <td>1.04T</td>
+                <td>27.30</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://ww2.money-link.com.tw/realtimenews/NewsContent.aspx?SN=68665900&PU=1011" target="_blank" title="中華電第一隻AI小金雞 中華創智國際成軍 [工商時報] - 富聯網">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    中華電第一隻AI小金雞 中華創智國際成軍 [工商時報] - 富聯網
+                    <span class="news-publisher">[富聯網]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>9</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2345.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2345</a></td>
+                <td>智邦</td>
+                <td><strong>909.00</strong></td>
+                <td class="change-positive"><strong>+0.55%</strong></td>
+                <td class="change-negative">-9.55%</td>
+                <td>941.60</td>
+                <td>981.30</td>
+                <td>1005.90</td>
+                <td>50.63</td>
+                <td>403,000</td>
+                <td>508.05B</td>
+                <td>29.48</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174450050" target="_blank" title="2345 智邦 - 1022智邦大跌| 外資賣超壓力股價重挫｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    2345 智邦 - 1022智邦大跌| 外資賣超壓力股價重挫｜CMoney 股市爆料同學會 - CMoney
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174456512" target="_blank" title="2345 智邦 - 智邦股價重挫，外資疑出貨助跌｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    2345 智邦 - 智邦股價重挫，外資疑出貨助跌｜CMoney 股市爆料同學會 - CMoney
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>10</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2357.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2357</a></td>
+                <td>華碩</td>
+                <td><strong>695.00</strong></td>
+                <td class="change-negative"><strong>-0.57%</strong></td>
+                <td class="change-positive">+1.61%</td>
+                <td>691.20</td>
+                <td>688.60</td>
+                <td>686.05</td>
+                <td>7.12</td>
+                <td>116,000</td>
+                <td>516.22B</td>
+                <td>14.12</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174446406" target="_blank" title="2357 華碩 - 華碩xAMD推出《決勝時刻7》PG百鬼夜行特别版显卡！｜CMoney 股市爆料同學會 - 理財寶">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    2357 華碩 - 華碩xAMD推出《決勝時刻7》PG百鬼夜行特别版显卡！｜CMoney 股市爆料同學會 - ...
+                    <span class="news-publisher">[理財寶]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174446406" target="_blank" title="2357 華碩 - 華碩xAMD推出《決勝時刻7》PG百鬼夜行特别版显卡！｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    2357 華碩 - 華碩xAMD推出《決勝時刻7》PG百鬼夜行特别版显卡！｜CMoney 股市爆料同學會 - ...
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>11</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/6669.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">6669</a></td>
+                <td>緯穎</td>
+                <td><strong>4020.00</strong></td>
+                <td class="change-negative"><strong>-1.11%</strong></td>
+                <td class="change-positive">+28.03%</td>
+                <td>3963.00</td>
+                <td>3778.00</td>
+                <td>3524.25</td>
+                <td>336.21</td>
+                <td>105,000</td>
+                <td>747.08B</td>
+                <td>21.98</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174434397" target="_blank" title="6669 緯穎 - 996669………..｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    6669 緯穎 - 996669………..｜CMoney 股市爆料同學會 - CMoney
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://ww2.money-link.com.tw/RealtimeNews/NewsContent.aspx?sn=5975504001&pu=News_0046" target="_blank" title="《台北股市》盤中焦點股：貿聯-KY、新盛力、緯穎、國光生、可寧衛 - 富聯網">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    《台北股市》盤中焦點股：貿聯-KY、新盛力、緯穎、國光生、可寧衛 - 富聯網
+                    <span class="news-publisher">[富聯網]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.businesstoday.com.tw/article/category/183008/post/202510220012/?utm_source=businesstoday&utm_medium=search&utm_campaign=article" target="_blank" title="緯穎(6669)股價1710→4200元還能追？從緯創「小金雞」變AI伺服器王者，緯穎3大底氣曝光 - 今周刊">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    緯穎(6669)股價1710→4200元還能追？從緯創「小金雞」變AI伺服器王者，緯穎3大底氣曝光 - 今周刊
+                    <span class="news-publisher">[今周刊]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>12</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/3017.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3017</a></td>
+                <td>奇鋐</td>
+                <td><strong>1165.00</strong></td>
+                <td class="change-negative"><strong>-0.85%</strong></td>
+                <td class="change-positive">+14.78%</td>
+                <td>1157.00</td>
+                <td>1168.50</td>
+                <td>1108.05</td>
+                <td>86.60</td>
+                <td>299,000</td>
+                <td>452.23B</td>
+                <td>39.03</td>
+                <td><span style="color:#999;">無新聞</span></td>
+            </tr>
+            
+            <tr>
+                <td>13</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2301.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2301</a></td>
+                <td>光寶科</td>
+                <td><strong>165.00</strong></td>
+                <td class="change-negative"><strong>-1.49%</strong></td>
+                <td class="change-negative">-9.84%</td>
+                <td>165.60</td>
+                <td>165.75</td>
+                <td>169.02</td>
+                <td>5.26</td>
+                <td>441,000</td>
+                <td>374.51B</td>
+                <td>29.26</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174445565" target="_blank" title="2301 光寶科- 一、光寶科技術面定位：創高後的強勢整理位置與趨勢：167...｜CMoney 股市爆料同學會 - 理財寶">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    2301 光寶科- 一、光寶科技術面定位：創高後的強勢整理位置與趨勢：167...｜CMoney 股市爆料同學...
+                    <span class="news-publisher">[理財寶]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174445565" target="_blank" title="2301 光寶科- 一、光寶科技術面定位：創高後的強勢整理位置與趨勢：167...｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    2301 光寶科- 一、光寶科技術面定位：創高後的強勢整理位置與趨勢：167...｜CMoney 股市爆料同學...
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://news.cnyes.com/news/id/6181819" target="_blank" title="光寶科9月營收154億元年增30%今年次高 伺服器電源出貨暢旺 | 鉅亨網 - 台股新聞 - news.cnyes.com">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    光寶科9月營收154億元年增30%今年次高 伺服器電源出貨暢旺 | 鉅亨網 - 台股新聞 - news.cny...
+                    <span class="news-publisher">[news.cnyes.com]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>14</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2383.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2383</a></td>
+                <td>台光電</td>
+                <td><strong>1110.00</strong></td>
+                <td class="change-negative"><strong>-0.89%</strong></td>
+                <td class="change-negative">-17.47%</td>
+                <td>1118.00</td>
+                <td>1147.50</td>
+                <td>1204.00</td>
+                <td>72.40</td>
+                <td>95,000</td>
+                <td>391.25B</td>
+                <td>32.70</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://ec.ltn.com.tw/article/breakingnews/5220199" target="_blank" title="台光電董定宇：去中國化有道理 Out of台灣沒道理 - 自由財經">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    台光電董定宇：去中國化有道理 Out of台灣沒道理 - 自由財經
+                    <span class="news-publisher">[自由財經]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=31476ece-e03c-46e9-ab43-fd9ce6897306" target="_blank" title="《TPCA》台光電：下世代CCL廠須擁五條件恐僅一家- 新聞 - MoneyDJ">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    《TPCA》台光電：下世代CCL廠須擁五條件恐僅一家- 新聞 - MoneyDJ
+                    <span class="news-publisher">[MoneyDJ]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.ttv.com.tw/finance/view/?i=102025221718573B0B5131D842D4813712407B8AC62BF32B&from=587" target="_blank" title="《TPCA》台光電：下世代CCL廠須擁五條件恐僅一家 - 台視全球資訊網">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    《TPCA》台光電：下世代CCL廠須擁五條件恐僅一家 - 台視全球資訊網
+                    <span class="news-publisher">[台視全球資訊網]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>15</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2327.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2327</a></td>
+                <td>國巨</td>
+                <td><strong>214.50</strong></td>
+                <td class="change-positive"><strong>+3.12%</strong></td>
+                <td class="change-positive">+21.88%</td>
+                <td>201.60</td>
+                <td>189.60</td>
+                <td>182.18</td>
+                <td>13.71</td>
+                <td>7,931,000</td>
+                <td>444.53B</td>
+                <td>22.27</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/ns-solutions-fairly-priced-solid-110837279.html" target="_blank" title="Is NS Solutions Fairly Priced After Solid 6% Weekly Gain?">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Is NS Solutions Fairly Priced After Solid 6% Weekly Gai...
+                    <span class="news-publisher">[Simply Wall St.]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/japan-clears-taiwans-yageo-shibaura-140742424.html" target="_blank" title="Japan clears Taiwan's Yageo in Shibaura bid after lengthy security review">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Japan clears Taiwan's Yageo in Shibaura bid after lengt...
+                    <span class="news-publisher">[Reuters]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/taiwans-yageo-raises-offer-price-031539232.html" target="_blank" title="Taiwan's Yageo raises offer price for Japan's Shibaura to 7,130 yen/share to further outbid rival">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Taiwan's Yageo raises offer price for Japan's Shibaura ...
+                    <span class="news-publisher">[Reuters]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>16</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2379.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2379</a></td>
+                <td>瑞昱</td>
+                <td><strong>535.00</strong></td>
+                <td class="change-negative"><strong>-0.93%</strong></td>
+                <td class="change-negative">-0.93%</td>
+                <td>535.20</td>
+                <td>538.10</td>
+                <td>538.60</td>
+                <td>8.28</td>
+                <td>2,000</td>
+                <td>274.38B</td>
+                <td>16.99</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/dip-tse-2379-margin-decline-201012931.html" target="_blank" title="DIP (TSE:2379) Margin Decline Reinforces Concerns Over Profitability and Dividend Stability">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    DIP (TSE:2379) Margin Decline Reinforces Concerns Over ...
+                    <span class="news-publisher">[Simply Wall St.]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/asian-markets-prime-picks-estimated-223422129.html" target="_blank" title="Asian Market's Prime Picks Estimated Below Fair Value In May 2025">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Asian Market's Prime Picks Estimated Below Fair Value I...
+                    <span class="news-publisher">[Simply Wall St.]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/3-dividend-stocks-offering-yields-030415909.html" target="_blank" title="3 Dividend Stocks Offering Yields Up To 4.7%">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    3 Dividend Stocks Offering Yields Up To 4.7%
+                    <span class="news-publisher">[Simply Wall St.]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>17</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/3661.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3661</a></td>
+                <td>世芯-KY</td>
+                <td><strong>3160.00</strong></td>
+                <td class="change-negative"><strong>-1.86%</strong></td>
+                <td class="change-negative">-14.59%</td>
+                <td>3211.00</td>
+                <td>3219.00</td>
+                <td>3315.25</td>
+                <td>166.67</td>
+                <td>161,000</td>
+                <td>255.94B</td>
+                <td>40.55</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174456541" target="_blank" title="3661 世芯-KY - 世芯蹭AI熱潮，股價待觀察｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    3661 世芯-KY - 世芯蹭AI熱潮，股價待觀察｜CMoney 股市爆料同學會 - CMoney
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>18</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/3034.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3034</a></td>
+                <td>聯詠</td>
+                <td><strong>418.50</strong></td>
+                <td class="change-negative"><strong>-0.48%</strong></td>
+                <td class="change-negative">-5.53%</td>
+                <td>415.10</td>
+                <td>413.80</td>
+                <td>421.32</td>
+                <td>11.33</td>
+                <td>46,000</td>
+                <td>254.66B</td>
+                <td>13.37</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/global-growth-companies-insiders-betting-090542021.html" target="_blank" title="Global Growth Companies Insiders Are Betting On">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Global Growth Companies Insiders Are Betting On
+                    <span class="news-publisher">[Simply Wall St.]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>19</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/3008.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">3008</a></td>
+                <td>大立光</td>
+                <td><strong>2285.00</strong></td>
+                <td class="change-negative"><strong>-1.08%</strong></td>
+                <td class="change-negative">-3.18%</td>
+                <td>2254.00</td>
+                <td>2276.50</td>
+                <td>2329.00</td>
+                <td>88.43</td>
+                <td>3,000</td>
+                <td>314.22B</td>
+                <td>13.59</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174432436" target="_blank" title="3008 大立光- 從昨天蘋果發表的M5 處理器透視其每個GPU 核心皆內建一...｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    3008 大立光- 從昨天蘋果發表的M5 處理器透視其每個GPU 核心皆內建一...｜CMoney 股市爆料同...
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174438797" target="_blank" title="3008 大立光- 競爭對手?｜CMoney 股市爆料同學會 - CMoney">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    3008 大立光- 競爭對手?｜CMoney 股市爆料同學會 - CMoney
+                    <span class="news-publisher">[CMoney]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://www.cmoney.tw/forum/article/174438797" target="_blank" title="3008 大立光- 競爭對手?｜CMoney 股市爆料同學會 - 理財寶">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    3008 大立光- 競爭對手?｜CMoney 股市爆料同學會 - 理財寶
+                    <span class="news-publisher">[理財寶]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>20</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2059.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2059</a></td>
+                <td>川湖</td>
+                <td><strong>3740.00</strong></td>
+                <td class="change-negative"><strong>-1.71%</strong></td>
+                <td class="change-positive">+16.15%</td>
+                <td>3783.00</td>
+                <td>3802.50</td>
+                <td>3556.75</td>
+                <td>276.05</td>
+                <td>13,000</td>
+                <td>356.41B</td>
+                <td>56.49</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://udn.com/news/story/7253/9090801" target="_blank" title="台達電、川湖認購熱| 上市電子| 股市 - 聯合新聞網">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    台達電、川湖認購熱| 上市電子| 股市 - 聯合新聞網
+                    <span class="news-publisher">[聯合新聞網]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://money.udn.com/money/story/5739/9090801?from=edn_subcatelist_cate" target="_blank" title="台達電、川湖 認購熱 | 權證特區 | 證券 - 經濟日報">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    台達電、川湖 認購熱 | 權證特區 | 證券 - 經濟日報
+                    <span class="news-publisher">[經濟日報]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://money.udn.com/money/story/5739/9090801?from=edn_newestlist_vip" target="_blank" title="台達電、川湖 認購熱 | 權證特區 | 證券 - 經濟日報">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: 分析失敗">➖</span>
+                    台達電、川湖 認購熱 | 權證特區 | 證券 - 經濟日報
+                    <span class="news-publisher">[經濟日報]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>21</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/2395.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">2395</a></td>
+                <td>研華</td>
+                <td><strong>324.50</strong></td>
+                <td class="change-negative"><strong>-0.61%</strong></td>
+                <td class="change-negative">-0.92%</td>
+                <td>324.60</td>
+                <td>323.85</td>
+                <td>322.62</td>
+                <td>3.67</td>
+                <td>16,000</td>
+                <td>280.49B</td>
+                <td>29.31</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/3-stocks-estimated-undervalued-november-120524571.html" target="_blank" title="3 Stocks Estimated To Be Undervalued In November 2024">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    3 Stocks Estimated To Be Undervalued In November 2024
+                    <span class="news-publisher">[Simply Wall St.]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+            <tr>
+                <td>22</td>
+                <td><a href="https://tw.stock.yahoo.com/quote/4938.TW" target="_blank" style="color:#667eea; text-decoration:none; font-weight:bold;">4938</a></td>
+                <td>和碩</td>
+                <td><strong>76.50</strong></td>
+                <td class="change-negative"><strong>-0.26%</strong></td>
+                <td class="change-positive">+7.59%</td>
+                <td>75.46</td>
+                <td>73.54</td>
+                <td>72.46</td>
+                <td>1.92</td>
+                <td>487,000</td>
+                <td>205.19B</td>
+                <td>16.28</td>
+                <td><div class="news-section">
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/pegatron-final-stage-evaluating-us-034343318.html" target="_blank" title="Taiwan's Pegatron is in final stage of evaluating US factory plan">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Taiwan's Pegatron is in final stage of evaluating US fa...
+                    <span class="news-publisher">[Reuters]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/nvidia-powers-big-gains-quanta-190011721.html" target="_blank" title="Nvidia Powers Big Gains For Quanta, Pegatron As AI Demand Explodes">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Nvidia Powers Big Gains For Quanta, Pegatron As AI Dema...
+                    <span class="news-publisher">[Benzinga]</span>
+                </a>
+            </div>
+            
+            <div class="news-item">
+                <a href="https://finance.yahoo.com/news/market-chatter-apple-dell-supplier-124250901.html" target="_blank" title="Market Chatter: Apple, Dell Supplier Pegatron Warns Trump Tariffs Could Cause US Shortages">
+                    <span style="color:#999; font-weight:bold; margin-right:5px;" title="中性: ">➖</span>
+                    Market Chatter: Apple, Dell Supplier Pegatron Warns Tru...
+                    <span class="news-publisher">[MT Newswires]</span>
+                </a>
+            </div>
+            </div></td>
+            </tr>
+            
+                </tbody>
+            </table>
+        </section>
+        
+        
+        <section class="section">
+            <h2 class="section-title">🤖 AI 投資建議分析</h2>
+            <p style="color:#999; font-size:0.9em; margin-bottom:10px;">
+                📅 分析基於：本報告完整數據（市場概況、法人動向、融資券、營收、技術指標）
+            </p>
+            <p style="color:#666; margin-bottom:20px;">
+                以下分析由 Google Gemini AI 根據本報告數據自動生成，提供綜合性的投資觀點與建議。
+            </p>
+            
+        <div style="background:#f9fafb; padding:20px; border-radius:10px; border-left:4px solid #667eea;">
+            <div style="display:flex; align-items:center; margin-bottom:15px;">
+                <span style="font-size:2em; margin-right:10px;">🤖</span>
+                <span style="font-size:1.1em; color:#666;">由 Google Gemini AI 生成</span>
+            </div>
+            <h3 style="color:#667eea; margin-top:25px; margin-bottom:10px; font-size:1.2em;">專業台股投資分析報告</h3>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">本報告旨在根據提供的市場數據，提供客觀且專業的投資分析與建議。</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">---</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">### 1. 市場趨勢分析 (Market Trend Analysis)</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">市場整體呈現強勢上漲趨勢，平均漲幅高達**2.99%**，顯示多頭動能集中且爆發力強。雖然上漲股票數（12支，54.5%）僅略多於下跌家數，但主要的漲幅集中在少數權值型AI供應鏈龍頭股，如緯穎、國巨等，推升了整體平均表現。多空力道對比極端，市場高度分化，漲跌幅前五名皆為高價電子股，顯示資金聚焦於高成長科技股，並在其中進行快速輪動與獲利了結。技術面上，看漲信號（13支價格>MA20）佔優勢，配合營收年增率平均高達**32.92%**，確認市場由強勁的基本面所支撐。</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">### 2. 法人動向解讀 (Institutional Flow Interpretation)</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">近五日三大法人合計淨買超逾**20.6萬張**，顯示資金持續大量且穩定地流入台股。其中，外資扮演了絕對主導的角色，淨買超高達**210,821 張**，確立了外資為本波行情的關鍵推手與主要推動者。然而，投信卻呈現顯著的淨賣超（**-38,053 張**），暗示本土法人可能正在進行階段性的獲利了結或部位調整。自營商則維持小幅淨買超。主力資金流向明確偏多，但法人間操作方向的分歧，反映了市場在追高與調節間的拉鋸，需留意後續外資買盤是否能持續支撐大盤。</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">### 3. 風險提示 (Risk Warning)</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">市場最大風險在於高度的「結構性分歧」與「波動性」。部分與AI相關的高價股（如台光電、世芯-KY）在短期內出現**-14.59%至-17.47%**的巨幅下跌，顯示資金流動快速，且漲多後獲利了結壓力極大。雖然融資餘額微幅下降（**-1,897 張**）有助於降低散戶過度追高導致的籌碼過熱風險，但需警惕技術面死亡交叉家數（6支）可能擴大，並將壓力擴散至其他權值股。由於市場漲幅過度集中於特定族群，一旦AI族群的基本面或情緒面出現逆風，可能導致大盤快速修正。</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">### 4. 投資建議 (Investment Recommendation)</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">**短期操作策略（1-3天）：**</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">應採取「順勢而為，嚴控停損」的策略。關注剛形成黃金交叉的強勢股（10支），尋求日內拉回或整理後的介入點。由於市場波動劇烈，不宜追高隔日已漲幅巨大的標的。對於快速下跌的標的（如台光電），應等待明確止跌訊號，避免搶反彈。</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">**中期佈局建議（1-2週）：**</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">建議鎖定外資持續買超且具備強勁營收（平均YoY > 30%）的AI供應鏈中下游核心標的。投資人可利用投信賣超或市場快速拉回時作為中期逢低承接的機會，特別是那些基本面無虞、但短期因技術面超賣而下跌的標的。維持高成長科技股的持股比重，並分散配置以管理產業集中風險。</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">**值得關注的股票類型或族群：**</p>
+<br>
+<p style="margin:10px 0; line-height:1.8; color:#333;">1. **AI伺服器與散熱模組：** 股價領先且有強勁法人買盤支持者（如緯穎、奇鋐），因基本面持續受惠於雲端資本支出。</p>
+<p style="margin:10px 0; line-height:1.8; color:#333;">2. **被動元件與高階零組件：** 受惠於規格升級的龍頭廠商（如國巨），顯示其在產業中具有定價能力與競爭優勢。</p>
+<p style="margin:10px 0; line-height:1.8; color:#333;">3. **高成長跌深股：** 營收基礎良好，但近期遭遇非理性賣壓的標的（如CCL相關），等待股價回穩並觀察外資是否結束賣超。</p>
+            <p style="margin-top:25px; padding-top:15px; border-top:1px solid #ddd; color:#999; font-size:0.9em; font-style:italic;">
+                ⚠️ 此分析由 AI 生成，僅供參考。投資有風險，請謹慎評估後再做決策。
+            </p>
+        </div>
+        
+        </section>
+        
 
-            const ctx = document.getElementById('riskBenefitChart').getContext('2d');
-            const riskBenefitChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: chartData.labels,
-                    datasets: [{
-                        label: '風險/益處等級 (0-10)',
-                        data: [...chartData.untrained.risks, ...chartData.untrained.benefits],
-                        backgroundColor: chartData.untrained.backgroundColor,
-                        borderColor: chartData.untrained.borderColor,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    indexAxis: 'y',
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: '情境：訓練不足/不當',
-                            font: { size: 18, family: "'Noto Sans TC', sans-serif" },
-                            padding: { top: 10, bottom: 20 }
-                        },
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.x !== null) {
-                                        label += context.parsed.x;
-                                    }
-                                    let type = context.dataIndex < 3 ? ' (風險)' : ' (益處)';
-                                    return label + type;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            max: 10,
-                            title: {
-                                display: true,
-                                text: '等級 (越高代表風險/益處越大)',
-                                font: { size: 14, family: "'Noto Sans TC', sans-serif" },
-                            }
-                        },
-                        y: {
-                           ticks: {
-                                font: {
-                                    size: 13,
-                                    family: "'Noto Sans TC', sans-serif"
-                                }
-                           }
-                        }
-                    }
-                }
-            });
-
-            const untrainedBtn = document.getElementById('untrainedBtn');
-            const trainedBtn = document.getElementById('trainedBtn');
-            const chartBtns = document.querySelectorAll('.chart-btn');
-
-            function updateChart(scenario) {
-                const data = (scenario === 'trained') ? chartData.trained : chartData.untrained;
-                riskBenefitChart.data.datasets[0].data = [...data.risks, ...data.benefits];
-                riskBenefitChart.options.plugins.title.text = (scenario === 'trained') ? '情境：科學適齡訓練' : '情境：訓練不足/不當';
-                riskBenefitChart.update();
-
-                chartBtns.forEach(btn => {
-                    btn.classList.remove('bg-blue-500', 'text-white');
-                    btn.classList.add('bg-gray-300', 'text-gray-700');
-                });
-                
-                if (scenario === 'trained') {
-                    trainedBtn.classList.add('bg-blue-500', 'text-white');
-                    trainedBtn.classList.remove('bg-gray-300', 'text-gray-700');
-                } else {
-                    untrainedBtn.classList.add('bg-blue-500', 'text-white');
-                    untrainedBtn.classList.remove('bg-gray-300', 'text-gray-700');
-                }
-            }
-
-            untrainedBtn.addEventListener('click', () => updateChart('untrained'));
-            trainedBtn.addEventListener('click', () => updateChart('trained'));
-
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const target = tab.getAttribute('data-tab');
-
-                    tabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-
-                    tabContents.forEach(content => {
-                        if (content.id === target) {
-                            content.classList.remove('hidden');
-                        } else {
-                            content.classList.add('hidden');
-                        }
-                    });
-                });
-            });
-
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('section');
-
-            window.addEventListener('scroll', () => {
-                let current = '';
-                sections.forEach(section => {
-                    const sectionTop = section.offsetTop;
-                    if (pageYOffset >= sectionTop - 80) {
-                        current = section.getAttribute('id');
-                    }
-                });
-
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    if (link.getAttribute('href').includes(current)) {
-                        link.classList.add('active');
-                    }
-                });
-            });
-        });
-    </script>
+        <footer>
+            <p>資料來源: Yahoo Finance API (yfinance) | 數據延遲約15分鐘 | 僅供參考，投資有風險</p>
+        </footer>
+    </div>
 </body>
 </html>
